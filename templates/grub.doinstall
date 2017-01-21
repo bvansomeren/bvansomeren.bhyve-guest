@@ -1,0 +1,3 @@
+linux /isolinux/vmlinuz ks="http://{{ bhyve_guest_kickstart_server }}/{{ item.name }}.ks" ksdevice=eth0 ip={{ item.kickstart_ip }} gateway={{ item.kickstart_gw }} netmask={{ item.kickstart_nm }} dns={{ item.kickstart_dns }}
+initrd /isolinux/initrd.img
+boot
