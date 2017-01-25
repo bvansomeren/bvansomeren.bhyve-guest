@@ -1,13 +1,12 @@
 bvansomeren.bhyve-guest
 =====================
 
-Ansible role that will set up CentOS 6 and 7 virtuals to an existing KVM hypervisor with ZFS as backing store.
+Ansible role that will set up CentOS 6 and 7 virtuals on top of FreeBSD bhyve with ZFS for zvols.
 
 Requirements
 ------------
 
-Linux with KVM and ZFS installed. Currently only tested with CentOS 7 and ZFS on Linux.
-Uses the virt-installer tool in combination with kickstart to install.
+Tested on FreeBSD 11, bhyve. Requires grub-bhyve
 
 Role Variables
 --------------
