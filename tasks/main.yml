@@ -4,6 +4,8 @@
 - debug: var="{{ item }}"
   with_items: "{{ bhyve_vms }}"
 
+- include: setup.yml
+
 - name: ensure kickstart file for VM
   template: src="{{ item.os.kickstart }}" dest="{{ ksroot }}/{{ item.name }}.ks"
   with_items: "{{ bhyve_vms }}"

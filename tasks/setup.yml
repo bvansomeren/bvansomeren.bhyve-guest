@@ -1,0 +1,27 @@
+---
+
+- name: ensure modules are loaded
+  command: kldload -n {{ item }}
+  with_items: "{{ bhyve_modules }}"
+
+- name: ensure modules are enabled in /boot/loader.conf
+  blockinfile:
+    dest: /boot/loader.conf
+    create: no
+    marker: "# {mark} settings for bhyve - managed by Ansible"
+    content: |
+        {% for module in bhyve_modules %}
+        {{ module }}_load="YES"
+        {% endfor %}
+
+- name: ensure bridge is setup
+  command: ifconfig bridge0 create
+  ignore_errors: yes
+  #Yes, this is shit
+
+- name: ensure taps are enabled
+  command: sysctl net.link.tap.up_on_open=1
+
+- name: ensure taps are setup
+  command: ifconfig bridge0 addm {{ bhyve_external_interface }} addm {{ item.tap }} creates=/dev/{{ item.tap }}
+  with_items: "{{ bhyve_vms }}"

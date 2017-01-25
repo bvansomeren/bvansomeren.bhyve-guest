@@ -4,6 +4,13 @@
 ksroot: "/root/ks"
 bhyve_dataset: zroot/vms
 bhyve_mountpoint: /usr/local/vms
+bhyve_external_interface: em0
+
+bhyve_modules:
+- vmm
+- nmdm
+- if_tap
+- if_bridge
 
 bhyve_guest_centos7:
   name: centos7
@@ -24,8 +31,8 @@ bhyve_guest_centos6:
   kickstart: centos6vm.ks
 
 bhyve_guest_default_nameservers:
-  - 8.8.8.8
-  - 8.8.4.4
+- 8.8.8.8
+- 8.8.4.4
 
 bhyve_guest_centos6_base_url: "{{ bhyve_guest_repo_server }}/6/os/x86_64"
 bhyve_guest_centos7_base_url: "{{ bhyve_guest_repo_server }}/7/os/x86_64"

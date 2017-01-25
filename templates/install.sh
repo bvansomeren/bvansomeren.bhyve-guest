@@ -1,2 +1,2 @@
 grub-bhyve -r cd0 -m {{ bhyve_mountpoint }}/{{ item.name }}/device.install.map -M {{ item.memory }} {{ item.name }} < grub.doinstall > /dev/null
-bhyve -c {{ item.vcpu }} -m {{ item.memory}}M -H -P -A -l com1,stdio -s 0:0,hostbridge -s 1:0,lpc -s 2:0,virtio-net,tap1 -s 3,ahci-cd,{{ item.iso }} -s 4,virtio-blk,/dev/zvol/{{ bhyve_dataset }}/{{ item.name }}/root -s 5,virtio-blk,/dev/zvol/{{ bhyve_dataset }}/{{ item.name }}/swap {{ item.name }}
+bhyve -c {{ item.vcpu }} -m {{ item.memory}}M -H -P -A -l com1,stdio -s 0:0,hostbridge -s 1:0,lpc -s 2:0,virtio-net,{{ item.tap }} -s 3,ahci-cd,{{ item.iso }} -s 4,virtio-blk,/dev/zvol/{{ bhyve_dataset }}/{{ item.name }}/root -s 5,virtio-blk,/dev/zvol/{{ bhyve_dataset }}/{{ item.name }}/swap {{ item.name }}
