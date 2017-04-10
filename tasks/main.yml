@@ -1,25 +1,38 @@
 ---
 # tasks file for bvansomeren.bhyve-guest
 
-- debug: var="{{ item }}"
+- debug:
+    var: "{{ item }}"
   with_items: "{{ bhyve_vms }}"
 
 - include: setup.yml
 
 - name: ensure kickstart file for VM
-  template: src="{{ item.os.kickstart }}" dest="{{ ksroot }}/{{ item.name }}.ks"
+  template:
+    src: "{{ item.os.kickstart }}"
+    dest: "{{ ksroot }}/{{ item.name }}.ks"
   with_items: "{{ bhyve_vms }}"
 
 - name: ensure ZFS root for VM
-  zfs: name={{ bhyve_dataset }}/{{ item.name }} state=present
+  zfs:
+    name: "{{ bhyve_dataset }}/{{ item.name }}"
+    state: present
   with_items: "{{ bhyve_vms }}"
 
 - name: ensure ZFS root ZVOL for VM
-  zfs: name="{{ bhyve_dataset }}/{{ item.name }}/root" state=present compression=lz4 volsize="{{ item.root }}m"
+  zfs:
+    name: "{{ bhyve_dataset }}/{{ item.name }}/root"
+    state: present
+    compression: lz4
+    volsize: "{{ item.root }}m"
   with_items: "{{ bhyve_vms }}"
 
 - name: ensure ZFS swap ZVOL for VM
-  zfs: name="{{ bhyve_dataset }}/{{ item.name }}/swap" state=present sync=disabled volsize="{{ item.swap }}m"
+  zfs:
+    name: "{{ bhyve_dataset }}/{{ item.name }}/swap"
+    state: present
+    sync: disabled
+    volsize: "{{ item.swap }}m"
   with_items: "{{ bhyve_vms }}"
 
 - name: check current virtual machines
@@ -64,9 +77,3 @@
     src: device.installed.map
     dest: "{{ bhyve_mountpoint }}/{{ item.name }}/device.installed.map"
   with_items: "{{ bhyve_vms }}"
-
-
-  #- name: start installation of VM
-  #shell: "/{{ ksroot }}/{{ item.name }}-install.sh >> {{ ksroot }}/{{ item.name }}-install.log"
-  #with_items: "{{ bhyve_vms }}"
-  #when: item.name not in vms.list_vms
