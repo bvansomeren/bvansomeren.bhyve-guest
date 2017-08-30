@@ -2,6 +2,7 @@ bvansomeren.bhyve-guest
 =====================
 
 Ansible role that will set up CentOS 6 and 7 virtuals on top of FreeBSD bhyve with ZFS for zvols.
+Adding support for UEFI and \*BSD
 
 Requirements
 ------------
